@@ -1,7 +1,7 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 {
     "name": "MBA - Mejoras de Acuerdos y Contratos",
-    "version": "19.0.1.0.0",
+    "version": "18.0.1.0.0",
     "category": "Contract",
     "summary": "Auto-población de cláusulas desde plantillas y mejoras de UX en Acuerdos",
     "author": "MBA Consultings",
