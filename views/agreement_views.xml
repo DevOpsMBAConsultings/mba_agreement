@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="partner_agreement_form_view_inherit_mba" model="ir.ui.view">
+        <field name="name">agreement.form.inherit.mba</field>
+        <field name="model">agreement</field>
+        <field name="inherit_id" ref="agreement_legal.partner_agreement_form_view" />
+        <field name="arch" type="xml">
+            <!-- Mejorar el botón Reset para que sea claro y visible -->
+            <xpath expr="//button[@name='action_open_recompute_from_template_wizard']" position="attributes">
+                <attribute name="string">🔄 Sincronizar Plantilla</attribute>
+                <attribute name="class">btn btn-secondary ms-2</attribute>
+            </xpath>
+
+            <!-- Ocultar el generador de marcadores de posición en contratos normales (solo visible en plantillas) -->
+            <xpath expr="//field[@name='field_id']/ancestor::group[1]" position="attributes">
+                <attribute name="invisible">not is_template</attribute>
+            </xpath>
+
+            <!-- Cotizaciones vinculadas al contrato -->
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="implementation_order_id" invisible="is_template" />
+                <field name="monthly_order_id" invisible="is_template" />
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Corregir acción de Tareas para Odoo 18/19 (cambiar tree por list) -->
+    <record id="agreement_project.action_project_task_agreement_specific" model="ir.actions.act_window">
+        <field name="view_mode">list,kanban,form</field>
+    </record>
+
+    <!-- 1. Restringir el menú de Acuerdos solo a usuarios con rol en Acuerdos -->
+    <record id="agreement_legal.agreement_legal_menu_root" model="ir.ui.menu">
+        <field name="group_ids" eval="[(4, ref('agreement.group_agreement_readonly'))]" />
+    </record>
+
+    <!-- 2. Restringir el Smart Button en Contactos para evitar Error de Acceso a usuarios sin permiso -->
+    <record id="view_partner_form_inherit_agreement_security" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.agreement.security</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="agreement.partner_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_open_agreement']" position="attributes">
+                <attribute name="groups">agreement.group_agreement_readonly</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

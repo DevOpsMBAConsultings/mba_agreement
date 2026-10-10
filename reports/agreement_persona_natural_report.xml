@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Acción: Descarga en PDF -->
+    <record id="action_report_agreement_persona_natural" model="ir.actions.report">
+        <field name="name">Contrato (Persona Natural)</field>
+        <field name="model">agreement</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">mba_agreement.report_agreement_persona_natural</field>
+        <field name="report_file">mba_agreement.report_agreement_persona_natural</field>
+        <field name="binding_model_id" ref="agreement.model_agreement" />
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- Acción: Vista Previa en Navegador (HTML) -->
+    <record id="action_report_agreement_persona_natural_preview" model="ir.actions.report">
+        <field name="name">Vista previa (Persona Natural)</field>
+        <field name="model">agreement</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">mba_agreement.report_agreement_persona_natural</field>
+        <field name="report_file">mba_agreement.report_agreement_persona_natural</field>
+        <field name="binding_model_id" ref="agreement.model_agreement" />
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- Plantilla QWeb del Contrato Persona Natural -->
+    <template id="report_agreement_persona_natural">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <div class="article" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 13px; line-height: 1.5; color: #111; padding: 25px 35px; background: white;">
+                    <!-- Título -->
+                    <div style="text-align: center; margin-bottom: 25px;">
+                        <h4 style="font-weight: bold; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">
+                            <span t-field="doc.name" />
+                        </h4>
+                    </div>
+
+                    <!-- Secciones y Cláusulas -->
+                    <t t-foreach="doc.sections_ids.sorted(lambda s: s.sequence)" t-as="sec">
+                        <t t-if="sec.title and sec.title.upper() != 'INTRO'">
+                            <p style="font-weight: bold; margin-top: 18px; margin-bottom: 6px; text-transform: uppercase;">
+                                <span t-field="sec.title" />
+                            </p>
+                        </t>
+                        <div style="text-align: justify; margin-bottom: 12px;">
+                            <span t-out="sec.dynamic_content" />
+                        </div>
+                    </t>
+
+                    <!-- Bloque de Firmas idéntico al PDF sin bordes extra -->
+                    <div style="margin-top: 45px; page-break-inside: avoid;">
+                        <table class="table-borderless" style="width: 100%; border: none !important; border-collapse: collapse;">
+                            <tbody>
+                                <tr style="border: none !important;">
+                                    <td style="width: 50%; vertical-align: top; border: none !important; padding: 0 20px 0 0; background: transparent;">
+                                        <p style="font-weight: bold; margin-bottom: 8px;">EL CONSULTOR</p>
+                                        <p style="margin: 0; line-height: 1.4;">Brooks Allan González Lau</p>
+                                        <p style="margin: 0; line-height: 1.4;">Cédula: 8-415-979</p>
+                                        <p style="margin: 0; line-height: 1.4;">R.U.C. 8-415-979 D.V. 06</p>
+                                        <p style="margin: 0; line-height: 1.4; margin-bottom: 45px;">MBA Consultings</p>
+                                        <div style="border-top: 1px solid #222; width: 85%;"></div>
+                                        <p style="font-style: italic; margin-top: 4px;">Firma</p>
+                                    </td>
+                                    <td style="width: 50%; vertical-align: top; border: none !important; padding: 0 0 0 20px; background: transparent;">
+                                        <p style="font-weight: bold; margin-bottom: 8px;">EL CLIENTE</p>
+                                        <p style="margin: 0; line-height: 1.4;">
+                                            <span t-esc="doc.partner_contact_id.name or (doc.partner_id.child_ids and doc.partner_id.child_ids[0].name) or 'Representante Legal'" />
+                                        </p>
+                                        <p style="margin: 0; line-height: 1.4;">Representante Legal</p>
+                                        <p style="margin: 0; line-height: 1.4;"><span t-field="doc.partner_id.name" /></p>
+                                        <p style="margin: 0; line-height: 1.4; margin-bottom: 45px;">
+                                            RUC: <span t-esc="doc.partner_id.vat or ''" />
+                                        </p>
+                                        <div style="border-top: 1px solid #222; width: 85%;"></div>
+                                        <p style="font-style: italic; margin-top: 4px;">Firma</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>
