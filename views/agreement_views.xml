@@ -31,7 +31,7 @@
 
     <!-- 1. Restringir el menú de Acuerdos solo a usuarios con rol en Acuerdos -->
     <record id="agreement_legal.agreement_legal_menu_root" model="ir.ui.menu">
-        <field name="group_ids" eval="[(4, ref('agreement.group_agreement_readonly'))]" />
+        <field name="groups_id" eval="[(4, ref('agreement_legal.group_agreement_readonly'))]" />
     </record>
 
     <!-- 2. Restringir el Smart Button en Contactos para evitar Error de Acceso a usuarios sin permiso -->
@@ -41,7 +41,7 @@
         <field name="inherit_id" ref="agreement.partner_form" />
         <field name="arch" type="xml">
             <xpath expr="//button[@name='action_open_agreement']" position="attributes">
-                <attribute name="groups">agreement.group_agreement_readonly</attribute>
+                <attribute name="groups">agreement_legal.group_agreement_readonly</attribute>
             </xpath>
         </field>
     </record>
