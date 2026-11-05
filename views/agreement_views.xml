@@ -21,6 +21,14 @@
                 <field name="implementation_order_id" invisible="is_template" />
                 <field name="monthly_order_id" invisible="is_template" />
             </xpath>
+
+            <!-- Quitar la obligatoriedad de fecha de inicio y fecha final impuesta por agreement_legal -->
+            <xpath expr="//field[@name='start_date']" position="attributes">
+                <attribute name="required">0</attribute>
+            </xpath>
+            <xpath expr="//field[@name='end_date']" position="attributes">
+                <attribute name="required">0</attribute>
+            </xpath>
         </field>
     </record>
 
